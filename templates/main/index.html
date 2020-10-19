@@ -2,7 +2,8 @@
     <style></style>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-lg-3 card alert-success p-4">
+            <div class="col-lg-3 card alert-secondary p-4" >
+            <div class="p-4 m-4">
                 <div class="card text-white bg-info mb-3" style="max-width: 18rem">
                     <div class="card-body">
                         <h5 class="card-title">Create Job Alert</h5>
@@ -13,8 +14,7 @@
                         <a href="#" class="btn btn-light">Create Job Alert</a>
                     </div>
                 </div>
-                <form class="form" method="POST" action="{% url 'main:homepage' %}?page=1&order=-postdate">
-                    {% csrf_token %}
+                <form class="form" method="GET" action="{% url 'main:homepage' %}?page=1&order=-postdate">
                     <div class="form-group">
                         <p><strong>Type of Employment</strong></p>
                         {% for employment in employments %}
@@ -28,31 +28,36 @@
                     </div>
                     <div class="form-group">
                         <p><strong>seniority level</strong></p>
-                        {% for senior in seniority %}
+                        {% for position in no_of_position %}
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="seniority-label" id="{{ senior }}"
-                                       value="{{ senior }}">
-                                <label class="form-check-label" for="{{ senior }}">
-                                    {{ senior | capfirst }}
+                                <input class="form-check-input" type="radio" name="no_of_position" id="{{ position }}"
+                                       value="{{ position }}">
+                                <label class="form-check-label" for="{{ position }}">
+                                    {% if position == '0-10' %}
+                                        {{ position | capfirst }}
+                                    {% else %}
+                                        >{{ position | capfirst }}
+                                    {% endif %}
                                 </label>
                             </div>
                         {% endfor %}
                     </div>
-                    <div class="form-group">
-                        <p><strong>Salary Range</strong></p>
-                        {% for salary_range in salary_ranges %}
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="salary-ranges"
-                                       id="{{ salary_range }}"
-                                       value="{{ salary_range }}">
-                                <label class="form-check-label" for="{{ salary_range }}">
-                                    {{ salary_range | capfirst }}
-                                </label>
-                            </div>
-                        {% endfor %}
-                    </div>
-                    <button type="submit" class="btn btn-primary">Apply filter</button>
+                    {#                    <div class="form-group">#}
+                    {#                        <p><strong>Salary Range</strong></p>#}
+                    {#                        {% for salary_range in salary_ranges %}#}
+                    {#                            <div class="form-check">#}
+                    {#                                <input class="form-check-input" type="radio" name="salary-ranges"#}
+                    {#                                       id="{{ salary_range }}"#}
+                    {#                                       value="{{ salary_range }}">#}
+                    {#                                <label class="form-check-label" for="{{ salary_range }}">#}
+                    {#                                    {{ salary_range | capfirst }}#}
+                    {#                                </label>#}
+                    {#                            </div>#}
+                    {#                        {% endfor %}#}
+                    {#                    </div>#}
+                    <button type="submit" class="btn btn-primary disabled" disabled>Apply filter</button>
                 </form>
+            </div>
             </div>
 
             <div class="col-lg-9">
@@ -94,9 +99,7 @@
                                         </svg>
                                     </i>
                                     <div class="dropdown-menu dropdown-menu-right">
-                                        <button class="dropdown-item" type="button">Action</button>
-                                        <button class="dropdown-item" type="button">Another action</button>
-                                        <button class="dropdown-item" type="button">Something else here</button>
+                                        <button class="dropdown-item text-center" type="button">!</button>
                                     </div>
                                 </div>
                                 <div class="card-body">
