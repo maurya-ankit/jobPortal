@@ -52,4 +52,4 @@ def loggedOut(request):
     return render(request, 'account/loggedout.html')
 
 def redirecthome(request):
-    redirect('/jobs/?page=1&order=-postdate')
+    return redirect('/jobs/?page=1&order=-postdate')
