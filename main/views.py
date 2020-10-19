@@ -3,8 +3,9 @@ from django.core.paginator import Paginator
 from django.shortcuts import render, redirect
 from django.utils.decorators import method_decorator
 from django.views import View
-from .forms import Fillup_Form
+
 from main.models import JobList
+from .forms import Fillup_Form
 
 # Create your views here.
 employments = ['part time jobs', 'full time jobs', 'remote jobs', 'internships', 'contract', 'training']
@@ -14,7 +15,7 @@ lst = [i for i in range(100)]
 
 
 def homePage(request):
-    order = request.GET.get('order')
+    order = request.GET.get('order') if request.GET.get('order') is not None else 'id'
     page = int(request.GET.get('page'))
 
     try:
@@ -58,30 +59,26 @@ def loggedOut(request):
 def redirecthome(request):
     return redirect('/jobs/?page=1&order=-postdate')
 
+
+def detailView(request, id):
+    job = JobList.objects.filter(id=id)[0]
+    return render(request, 'main/detail.html', {'job': job})
+
+
 class fillupForm(View):
     @method_decorator(login_required)
-    def get(self, request,uniq_id):
-        form=Fillup_Form()
-        context={'form':form}
+    def get(self, request, uniq_id):
+        form = Fillup_Form()
+        job=JobList.objects.filter(id=uniq_id)[0]
+        context = {'form': form,'job':job}
         return render(request, 'main/fillupform.html', context)
 
     @method_decorator(login_required)
-    def post(self, request,uniq_id):
+    def post(self, request, uniq_id):
         form = Fillup_Form(request.POST, request.FILES)
         if form.is_valid():
             obj = form.save(commit=False)
-            obj.user=request.user
-            obj.uniq_id=JobList.objects.filter(id=uniq_id)[0]
+            obj.user = request.user
+            obj.uniq_id = JobList.objects.filter(id=uniq_id)[0]
             form.save()
-        return redirect('/')
-        # user = request.user.id
-        # firstName = request.POST.get("firstName")
-        # lastName = request.POST.get("lastName")
-        # email = request.POST.get("email")
-        # city = request.POST.get("city")
-        # state = request.POST.get("state")
-        # pincode = request.POST.get("pincode")
-        # Resume = request.FILES.get("resume")
-        #
-        # print(user,uniq_id,firstName,lastName,email,city,state,pincode,Resume)
-        # return render(request,'main/fillupform.html')
+        return render(request, 'main/submitted.html', {'uniq_id': uniq_id})

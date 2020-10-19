@@ -1,0 +1,79 @@
+{% extends 'codebase.html' %}
+{% load static %}
+{% block content %}
+    <link type="text/css" href="{% static 'css/detail.css' %}">
+    <div class="container pen">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="page-header">
+                    <h5>{{ job.company }}</h5>
+                    <h1>{{ job.jobtitle }}</h1>
+                    <p class="lead"><b>Job Industry:</b> <small>{{ job.industry }}</small></p>
+                    <p class="lead"><b>Posted On:</b> <small>{{ job.postdate | truncatechars:11 }}</small></p>
+
+                    <ul class="technology">
+                        <li>Experience: <span class="label label-default">{{ job.experience }}</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <p class="lead"><strong>Education:</strong><small>  {{ job.education }}</small></p>
+                <hr class="pen"/>
+                <p>Job Location: <code>{{ job.joblocation_address }}</code></p>
+                <hr class="pen-alt"/>
+                {% if job.numberofpositions %}
+                    <p>Number Of Positions: <code>{{ job.numberofpositions }}</code></p>
+                {% else %}
+                    <p>Number Of Positions: <code>Not Specified</code></p>
+                {% endif %}
+                <hr class="pen-tall"/>
+                <p>Pay rate: <code>{{ job.payrate }}</code></p>
+                <hr class="pen-tall"/>
+
+                <p class="pen-alert">Skills Required: <code>{{ job.skills }}</code></p>
+                <hr class="pen-tall"/>
+                {% if job.site_name %}
+                    <p>Site Name: <code>{{ job.site_name }}</code></p>
+                {% else %}
+                    <p>Site Name: <code>N/A</code></p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="page-separator">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="pen-box">
+                    <code>Description</code>
+                    <p>{{ job.jobdescription }}</p>
+                    <hr class="pen-tall"/>
+                    <p>Job Id:<code> {{ job.jobid }}</code></p>
+                    <p>Post Id:<code> {{ job.uniq_id }}</code></p>
+                    <hr class="pen-tall"/>
+
+                </div>
+            </div>
+        </div>
+        <div class="card-footer my-3 d-flex justify-content-between">
+            <a type="button" class="btn btn-primary" href="{% url 'main:fillupform' job.id %}">Apply
+                Now</a>
+            <a type="button" class="btn btn-light">Messages</a>
+        </div>
+    </div>
+
+{% endblock %}

@@ -4,7 +4,8 @@
 {% load crispy_forms_tags %}
 {% block content %}
     <div class="container">
-        <form method="POST" enctype="multipart/form-data">
+    <h1 class="alert alert-success text-center"><small>{{ job.jobtitle }}</small></h1>
+        <form method="POST" class="card p-4 alert-light border-success" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form | crispy }}
             <button class="btn btn-primary" type="submit">Submit form</button>

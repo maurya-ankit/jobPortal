@@ -66,56 +66,64 @@
                     <div class="dropdown-menu">
                         <a class="dropdown-item" href="?page={{ jobs.number }}&order=postdate">Date ascending</a>
                         <a class="dropdown-item" href="?page={{ jobs.number }}&order=-postdate">Date descending</a>
+                        <a class="dropdown-item" href="?page={{ jobs.number }}&order=id">Id ascending</a>
+                        <a class="dropdown-item" href="?page={{ jobs.number }}&order=-id">Id descending</a>
 
                     </div>
                 </div>
                 <div class="custom">
                     {% for job in jobs %}
-                        <div class="card alert-light" id="card">
-                            <i
-                                    class="card-img"
-                                    id='cardimg'
-                            >
-                                <svg width="3em" height="3em" viewBox="0 0 16 16" class="bi bi-square-fill"
-                                     fill="yellow" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2z"></path>
-                                </svg>
-                            </i>
-                            <div class="btn-group" id="hori3dot">
-
-                                <i class="btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-three-dots"
-                                         fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                        <path fill-rule="evenodd"
-                                              d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"></path>
+                        <a href="{% url 'main:detailed' job.id %}" style="text-decoration: none">
+                            <div class="card alert-light shadow-lg pt-2" id="card">
+                                <i
+                                        class="card-img"
+                                        id='cardimg'
+                                >
+                                    <svg width="3em" height="3em" viewBox="0 0 16 16" class="bi bi-square-fill"
+                                         fill="yellow" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2z"></path>
                                     </svg>
                                 </i>
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <button class="dropdown-item" type="button">Action</button>
-                                    <button class="dropdown-item" type="button">Another action</button>
-                                    <button class="dropdown-item" type="button">Something else here</button>
+                                <div class="btn-group" id="hori3dot">
+
+                                    <i class="btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-three-dots"
+                                             fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd"
+                                                  d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"></path>
+                                        </svg>
+                                    </i>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <button class="dropdown-item" type="button">Action</button>
+                                        <button class="dropdown-item" type="button">Another action</button>
+                                        <button class="dropdown-item" type="button">Something else here</button>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="mt-4" id="cardtitle">{{ job.jobtitle }}</h5>
+                                    <p id="cardtitle"><b>Company Name</b>: {{ job.company | capfirst }}</p>
+                                    <p id="cardtitle"><b>Skills</b>: {{ job.skills }}</p>
+                                    <p id="cardtitle"><b>Pay-Rate</b>: {{ job.payrate }}</p>
+                                    <p id="cardtitle"><b>Job Location</b>: {{ job.joblocation_address }}</p>
+                                    <p id="cardtitle"><b>Posted On</b>: {{ job.postdate | truncatechars:11 }}</p>
+                                    {% if job.site_name %}
+                                        <p id="cardtitle"><b>Site Name</b>: <a
+                                                href="https://{{ job.site_name }}">{{ job.site_name }}</a></p>
+
+                                    {% else %}
+                                        <p id="cardtitle" hidden><b>Site Name</b>: <a
+                                                href="https://{{ job.site_name }}">{{ job.site_name }}</a></p>
+                                    {% endif %}
+
+
+                                </div>
+                                <div class="card-footer mt-3 d-flex justify-content-between">
+                                    <a type="button" class="btn btn-primary" href="{% url 'main:fillupform' job.id %}">Apply
+                                        Now</a>
+                                    <a type="button" class="btn btn-light">Messages</a>
                                 </div>
                             </div>
-                            <div class="card-body">
-                                <h5 class="mt-4" id="cardtitle">{{ job.jobtitle }}</h5>
-                                <p id="cardtitle"><b>Company Name</b>: {{ job.company | capfirst }}</p>
-                                <p id="cardtitle"><b>Skills</b>: {{ job.skills }}</p>
-                                <p id="cardtitle"><b>Pay-Rate</b>: {{ job.payrate }}</p>
-                                <p id="cardtitle"><b>Job Location</b>: {{ job.joblocation_address }}</p>
-                                <p id="cardtitle"><b>Posted On</b>: {{ job.postdate | truncatechars:11 }}</p>
-                                {% if job.site_name %}
-                                    <p id="cardtitle"><b>Site Name</b>: <a
-                                            href="{{ job.site_name }}">{{ job.site_name }}</a></p>
-
-                                {% endif %}
-
-
-                            </div>
-                            <div class="card-footer mt-3 d-flex justify-content-between">
-                                <a type="button" class="btn btn-primary" href="{% url 'main:fillupform' job.id %}">Apply Now</a>
-                                <a type="button" class="btn btn-light">Messages</a>
-                            </div>
-                        </div>
+                        </a>
                     {% endfor %}
                 </div>
             </div>
@@ -128,10 +136,12 @@
                     {% if jobs.has_previous %}
 
                         <li class="page-item">
-                            <a class="page-link" href="{% url 'main:homepage' %}?page={{ jobs.previous_page_number }}&order=-postdate">previous</a>
+                            <a class="page-link"
+                               href="{% url 'main:homepage' %}?page={{ jobs.previous_page_number }}&order=-postdate">previous</a>
 
                         </li>
-                        <li class="page-item"><a class="page-link" href="{% url 'main:homepage' %}?page=1&order=-postdate">First</a>
+                        <li class="page-item"><a class="page-link"
+                                                 href="{% url 'main:homepage' %}?page=1&order=-postdate">First</a>
                         </li>
                     {% else %}
                         <li class="page-item disabled">
