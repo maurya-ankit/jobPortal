@@ -1,2 +1,3 @@
 venv/*
 Sample Data File.csv
+db.sqlite3
