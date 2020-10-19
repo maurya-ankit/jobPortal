@@ -11,7 +11,6 @@ lst = [i for i in range(100)]
 
 
 def homePage(request):
-    global part_time_jobs
     order = request.GET.get('order')
     page = int(request.GET.get('page'))
 
@@ -27,7 +26,7 @@ def homePage(request):
     except:
         pass
 
-    jobsall = JobList.objects.get(jobdescription__contains=part_time_jobs).order_by(order)
+    jobsall = JobList.objects.all().order_by(order)
     item_per_page = 12
     total = jobsall.count()
     start, end = item_per_page * (page - 1) + 1, item_per_page * page
@@ -51,3 +50,6 @@ def loggedOut(request):
     if (request.user.is_authenticated):
         return redirect('/accounts/logout')
     return render(request, 'account/loggedout.html')
+
+def redirecthome(request):
+    redirect('/jobs/?page=1&order=-postdate')
