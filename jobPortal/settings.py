@@ -9,8 +9,9 @@ https://docs.djangoproject.com/en/3.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
-import django_heroku
 from pathlib import Path
+
+import django_heroku
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -38,6 +39,7 @@ INSTALLED_APPS = [
     'main.apps.MainConfig',
     'django.contrib.sites',
     'allauth',
+    'import_export',
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
@@ -150,7 +152,7 @@ STATICFILES_DIRS = [
 
 SITE_ID = 1
 
-LOGIN_REDIRECT_URL = '/jobs/?page=1'
+LOGIN_REDIRECT_URL = '/jobs/?page=1&order=-postdate'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True
 ACCOUNT_LOGOUT_ON_GET = True

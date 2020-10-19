@@ -11,11 +11,10 @@ lst = [i for i in range(100)]
 
 
 def homePage(request):
+    global part_time_jobs
     order = request.GET.get('order')
-    jobsall = JobList.objects.all().order_by(order)
-    item_per_page = 12
-    total = jobsall.count()
     page = int(request.GET.get('page'))
+
     try:
         part_time_jobs = request.POST.get("part time jobs")
         full_time_jobs = request.POST.get("full time jobs")
@@ -27,6 +26,10 @@ def homePage(request):
         salary_rangesre = request.POST.get('salary-ranges')
     except:
         pass
+
+    jobsall = JobList.objects.get(jobdescription__contains=part_time_jobs).order_by(order)
+    item_per_page = 12
+    total = jobsall.count()
     start, end = item_per_page * (page - 1) + 1, item_per_page * page
     end = min(end, total)
     paginator = Paginator(jobsall, item_per_page)
