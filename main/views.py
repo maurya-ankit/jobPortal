@@ -1,6 +1,9 @@
+from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.shortcuts import render, redirect
-
+from django.utils.decorators import method_decorator
+from django.views import View
+from .forms import Fillup_Form
 from main.models import JobList
 
 # Create your views here.
@@ -51,5 +54,34 @@ def loggedOut(request):
         return redirect('/accounts/logout')
     return render(request, 'account/loggedout.html')
 
+
 def redirecthome(request):
     return redirect('/jobs/?page=1&order=-postdate')
+
+class fillupForm(View):
+    @method_decorator(login_required)
+    def get(self, request,uniq_id):
+        form=Fillup_Form()
+        context={'form':form}
+        return render(request, 'main/fillupform.html', context)
+
+    @method_decorator(login_required)
+    def post(self, request,uniq_id):
+        form = Fillup_Form(request.POST, request.FILES)
+        if form.is_valid():
+            obj = form.save(commit=False)
+            obj.user=request.user
+            obj.uniq_id=JobList.objects.filter(id=uniq_id)[0]
+            form.save()
+        return redirect('/')
+        # user = request.user.id
+        # firstName = request.POST.get("firstName")
+        # lastName = request.POST.get("lastName")
+        # email = request.POST.get("email")
+        # city = request.POST.get("city")
+        # state = request.POST.get("state")
+        # pincode = request.POST.get("pincode")
+        # Resume = request.FILES.get("resume")
+        #
+        # print(user,uniq_id,firstName,lastName,email,city,state,pincode,Resume)
+        # return render(request,'main/fillupform.html')
