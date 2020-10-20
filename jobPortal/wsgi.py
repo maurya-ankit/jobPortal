@@ -15,5 +15,3 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'jobPortal.settings')
 
 application = get_wsgi_application()
 
-from whitenoise.django import
-application = DjangoWhiteNoise(application)
